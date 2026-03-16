@@ -18,11 +18,11 @@ void URFPSWeaponComponent::BeginPlay()
 
 	if ( ARFPSCharacter* Character = Cast<ARFPSCharacter>( GetOwner() ) )
 	{
-		if ( ARFPSBaseWeapon* Pistol = GetWorld()->SpawnActor<ARFPSBaseWeapon>( PistolClass ) )
+		if ( ARFPSBaseWeapon* Weapon = GetWorld()->SpawnActor<ARFPSBaseWeapon>( WeaponClass ) )
 		{
-			Pistol->SetOwner( Character );
-			Pistol->AttachToComponent( Character->GetWeaponSceneComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale );
-			CurrentWeapon = Pistol;
+			Weapon->SetOwner( Character );
+			Weapon->AttachToComponent( Character->GetWeaponSceneComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale );
+			CurrentWeapon = Weapon;
 		}
 	}
 }

@@ -19,7 +19,7 @@ public:
 	
 protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Weapon" )
-	TSubclassOf<ARFPSBaseWeapon> PistolClass;
+	TSubclassOf<ARFPSBaseWeapon> WeaponClass;
 	
 	UPROPERTY( VisibleInstanceOnly, BlueprintReadOnly, Category="Weapon" )
 	ARFPSBaseWeapon* CurrentWeapon;
