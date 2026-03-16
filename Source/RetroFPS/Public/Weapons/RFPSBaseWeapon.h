@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "RFPSBaseWeapon.generated.h"
 
+class UPaperFlipbook;
 class UPaperFlipbookComponent;
 class USceneComponent;
 class UArrowComponent;
@@ -22,13 +23,22 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
+
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Root" )
 	USceneComponent* SceneRoot;
+
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Fire" )
+	USceneComponent* FireStartPoint;
 
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Sprites" )
 	UArrowComponent* ArrowComponent;
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
 	UPaperFlipbookComponent* FlipbookComponent;
+
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
+	UPaperFlipbook* FlipbookIdle;
+
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
+	UPaperFlipbook* FlipbookFire;
 };

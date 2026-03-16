@@ -9,9 +9,12 @@
 ARFPSBaseWeapon::ARFPSBaseWeapon()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	
-	SceneRoot = CreateDefaultSubobject<USceneComponent>(FName("SceneRoot"));
+
+	SceneRoot = CreateDefaultSubobject<USceneComponent>( TEXT( "SceneRoot" ) );
 	SetRootComponent( SceneRoot );
+
+	FireStartPoint = CreateDefaultSubobject<USceneComponent>( TEXT( "FireStartPoint" ) );
+	FireStartPoint->SetupAttachment( GetRootComponent() );
 
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>( "ArrowComponent" );
 	ArrowComponent->SetupAttachment( GetRootComponent() );
@@ -25,4 +28,6 @@ ARFPSBaseWeapon::ARFPSBaseWeapon()
 void ARFPSBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FlipbookComponent->SetFlipbook( FlipbookIdle );
 }
