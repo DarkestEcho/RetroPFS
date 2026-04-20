@@ -7,22 +7,27 @@
 #include "Weapons/RFPSBaseWeapon.h"
 #include "RFPSWeaponComponent.generated.h"
 
+class UChildActorComponent;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class RETROFPS_API URFPSWeaponComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	URFPSWeaponComponent();
-	
+
 protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Weapon" )
 	TSubclassOf<ARFPSBaseWeapon> WeaponClass;
-	
+
 	UPROPERTY( VisibleInstanceOnly, BlueprintReadOnly, Category="Weapon" )
 	ARFPSBaseWeapon* CurrentWeapon;
+	
+public:
+	void StartFire();
+	void StopFire();
 
 protected:
 	// Called when the game starts
