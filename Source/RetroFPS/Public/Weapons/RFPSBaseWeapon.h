@@ -11,7 +11,7 @@ class UPaperFlipbookComponent;
 class USceneComponent;
 class UArrowComponent;
 
-UCLASS( Abstract, Blueprintable )
+UCLASS( Abstract, NotBlueprintable )
 class RETROFPS_API ARFPSBaseWeapon : public AActor
 {
 	GENERATED_BODY()
@@ -24,6 +24,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+protected:
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Root" )
 	USceneComponent* SceneRoot;
 
@@ -41,4 +42,17 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
 	UPaperFlipbook* FlipbookFire;
+
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Specs" )
+	float Distance { 0.0f };
+
+	bool bFiring { false };
+
+	virtual void MakeShot() PURE_VIRTUAL( ARFPSBaseWeapon::MakeShot, );
+
+public:
+	virtual void StartFire() PURE_VIRTUAL( ARFPSBaseWeapon::StartFire, );
+	virtual void StopFire() PURE_VIRTUAL( ARFPSBaseWeapon::StopFire, );
+
+	bool GetIsFiring() const;
 };

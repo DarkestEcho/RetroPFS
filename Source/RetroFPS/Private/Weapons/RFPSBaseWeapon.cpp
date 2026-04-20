@@ -29,5 +29,13 @@ void ARFPSBaseWeapon::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FlipbookComponent->SetFlipbook( FlipbookIdle );
+	if ( FlipbookIdle )
+	{
+		FlipbookComponent->SetFlipbook( FlipbookIdle );
+	}
+}
+
+bool ARFPSBaseWeapon::GetIsFiring() const
+{
+	return bFiring;
 }
