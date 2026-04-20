@@ -12,6 +12,7 @@
 
 ARFPSCharacter::ARFPSCharacter()
 {
+	PrimaryActorTick.bCanEverTick = false;
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize( 55.f, 96.0f );
 
@@ -25,10 +26,10 @@ ARFPSCharacter::ARFPSCharacter()
 	FirstPersonCameraComponent->FirstPersonFieldOfView = 70.0f;
 	FirstPersonCameraComponent->FirstPersonScale = 0.6f;
 
-	WeaponSceneComponent = CreateDefaultSubobject<USceneComponent>( TEXT( "WeaponSceneComponent" ) );
-	WeaponSceneComponent->SetupAttachment( FirstPersonCameraComponent );
-	WeaponSceneComponent->SetRelativeScale3D( FVector( 0.07 ) );
-	WeaponSceneComponent->SetRelativeLocation( FVector( 20.0, 0.0, -6.0 ) );
+	WeaponSocket = CreateDefaultSubobject<USceneComponent>( TEXT( "WeaponSocket" ) );
+	WeaponSocket->SetupAttachment( FirstPersonCameraComponent );
+	WeaponSocket->SetRelativeScale3D( FVector( 0.07 ) );
+	WeaponSocket->SetRelativeLocation( FVector( 20.0, 0.0, -7.0 ) );
 
 	WeaponComponent = CreateDefaultSubobject<URFPSWeaponComponent>( TEXT( "WeaponComponent" ) );
 
@@ -58,6 +59,9 @@ void ARFPSCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputComp
 		// Looking/Aiming
 		EnhancedInputComponent->BindAction( LookAction, ETriggerEvent::Triggered, this, &ARFPSCharacter::LookInput );
 		EnhancedInputComponent->BindAction( MouseLookAction, ETriggerEvent::Triggered, this, &ARFPSCharacter::LookInput );
+		
+		EnhancedInputComponent->BindAction( FireAction, ETriggerEvent::Started, WeaponComponent, &URFPSWeaponComponent::StartFire );
+		EnhancedInputComponent->BindAction( FireAction, ETriggerEvent::Completed, WeaponComponent, &URFPSWeaponComponent::StopFire );
 	}
 	else
 	{

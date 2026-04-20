@@ -29,7 +29,7 @@ protected:
 	UCameraComponent* FirstPersonCameraComponent;
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Components" )
-	USceneComponent* WeaponSceneComponent;
+	USceneComponent* WeaponSocket;
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Components" )
 	URFPSWeaponComponent* WeaponComponent;
@@ -50,6 +50,10 @@ protected:
 	/** Mouse Look Input Action */
 	UPROPERTY( EditAnywhere, Category ="Input" )
 	class UInputAction* MouseLookAction;
+	
+	/** Mouse Look Input Action */
+	UPROPERTY( EditAnywhere, Category ="Input" )
+	class UInputAction* FireAction;
 
 public:
 	ARFPSCharacter();
@@ -85,5 +89,5 @@ public:
 	/** Returns first person camera component **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
-	USceneComponent* GetWeaponSceneComponent() const { return WeaponSceneComponent; }
+	USceneComponent* GetWeaponSocket() const { return WeaponSocket; }
 };
