@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Types/RFPSTypes.h"
 #include "Weapons/RFPSBaseWeapon.h"
 #include "RFPSWeaponComponent.generated.h"
 
@@ -19,17 +20,20 @@ public:
 	URFPSWeaponComponent();
 
 protected:
-	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Weapon" )
-	TSubclassOf<ARFPSBaseWeapon> WeaponClass;
+	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category="Ammo" )
+	TArray<TSubclassOf<ARFPSBaseWeapon>> Weapons {};
 
-	UPROPERTY( VisibleInstanceOnly, BlueprintReadOnly, Category="Weapon" )
-	ARFPSBaseWeapon* CurrentWeapon;
-	
+	UPROPERTY( VisibleInstanceOnly, BlueprintReadWrite, Category="Weapon" )
+	ARFPSBaseWeapon* CurrentWeapon { nullptr };
+
 public:
-	void StartFire();
-	void StopFire();
+	void StartAttack();
+	void StopAttack();
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+
+private:
+	int32 CurrentWeaponIndex { 0 };
 };

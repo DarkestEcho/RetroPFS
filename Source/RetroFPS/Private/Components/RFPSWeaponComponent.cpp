@@ -11,22 +11,24 @@ URFPSWeaponComponent::URFPSWeaponComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void URFPSWeaponComponent::StartFire()
+void URFPSWeaponComponent::StartAttack()
 {
 	if ( !CurrentWeapon )
 	{
 		return;
 	}
-	CurrentWeapon->StartFire();
+
+	CurrentWeapon->StartAttack();
 }
 
-void URFPSWeaponComponent::StopFire()
+void URFPSWeaponComponent::StopAttack()
 {
 	if ( !CurrentWeapon )
 	{
 		return;
 	}
-	CurrentWeapon->StopFire();
+
+	CurrentWeapon->StopAttack();
 }
 
 // Called when the game starts
@@ -34,12 +36,17 @@ void URFPSWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if ( Weapons.IsEmpty() )
+	{
+		return;
+	}
+
 	if ( ARFPSCharacter* Character = Cast<ARFPSCharacter>( GetOwner() ) )
 	{
-		if ( ARFPSBaseWeapon* Weapon = GetWorld()->SpawnActor<ARFPSBaseWeapon>( WeaponClass ) )
+		FActorSpawnParameters SpawnParameters { FActorSpawnParameters() };
+		SpawnParameters.Owner = Character;
+		if ( ARFPSBaseWeapon* Weapon = GetWorld()->SpawnActor<ARFPSBaseWeapon>( Weapons[CurrentWeaponIndex], SpawnParameters ) )
 		{
-			Weapon->SetOwner( Character );
-			
 			Weapon->AttachToComponent( Character->GetWeaponSocket(), FAttachmentTransformRules::SnapToTargetIncludingScale );
 			CurrentWeapon = Weapon;
 		}
