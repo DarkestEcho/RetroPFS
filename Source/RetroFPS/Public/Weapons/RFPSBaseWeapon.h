@@ -7,6 +7,7 @@
 #include "RFPSBaseWeapon.generated.h"
 
 class UPaperFlipbook;
+class URFPSWeaponComponent;
 class UPaperFlipbookComponent;
 class USceneComponent;
 class UArrowComponent;
@@ -20,19 +21,21 @@ public:
 	// Sets default values for this actor's properties
 	ARFPSBaseWeapon();
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	virtual void StartAttack();
+	virtual void StopAttack();
+
+	bool IsInUse() const;
 
 protected:
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Root" )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Scene" )
 	USceneComponent* SceneRoot;
 
-	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Fire" )
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Scene" )
 	USceneComponent* FireStartPoint;
 
-	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Sprites" )
+	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Scene" )
 	UArrowComponent* ArrowComponent;
+
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
 	UPaperFlipbookComponent* FlipbookComponent;
@@ -43,16 +46,27 @@ protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Sprites" )
 	UPaperFlipbook* FlipbookFire;
 
-	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Specs" )
+
+	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category = "Specs", meta=( UIMin = "0", UIMax = "100" ) )
+	float AttackSpeed { 1.0f };
+
+	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category = "Specs" )
 	float Distance { 0.0f };
 
-	bool bFiring { false };
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Specs", meta=( ClampMin=0 ) )
+	float SpreadAngleHorizontal { 0.0f };
 
-	virtual void MakeShot() PURE_VIRTUAL( ARFPSBaseWeapon::MakeShot, );
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Specs", meta=( ClampMin=0 ) )
+	float SpreadAngleVertical { 0.0f };
 
-public:
-	virtual void StartFire() PURE_VIRTUAL( ARFPSBaseWeapon::StartFire, );
-	virtual void StopFire() PURE_VIRTUAL( ARFPSBaseWeapon::StopFire, );
+	bool bInUse { false };
 
-	bool GetIsFiring() const;
+
+	virtual void BeginPlay() override;
+
+	virtual void MakeHit();
+
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty( struct FPropertyChangedEvent& PropertyChangedEvent ) override;
+#endif // WITH_EDITOR
 };
