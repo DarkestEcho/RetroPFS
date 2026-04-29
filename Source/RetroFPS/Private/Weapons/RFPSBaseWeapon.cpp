@@ -36,11 +36,10 @@ void ARFPSBaseWeapon::MakeHit()
 		{
 			RFPSUtils::GetPawnViewPoint( Cast<APawn>( GetOwner() ) ),
 			Distance,
-			SpreadAngleHorizontal,
-			SpreadAngleVertical,
-			ECC_Visibility,
+			SpreadAngle,
 			{ this, GetOwner() },
-			true,
+			ECC_Visibility,
+			bShowTraces,
 			FireStartPoint->GetComponentLocation(),
 		}
 	);

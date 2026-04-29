@@ -8,7 +8,7 @@ class RFPSUtils
 {
 public:
 	static FViewPoint GetPawnViewPoint( const APawn* Pawn );
-	static FVector GetLineTraceDirection( const FViewPoint& ViewPoint, const float SpreadAngleHorizontal, const float SpreadAngleVertical );
+	static FVector GetLineTraceDirection( const FViewPoint& ViewPoint, const float SpreadAngle );
 	static FHitResult MakeLineTraceSingle( const UWorld* World, const FTraceData& TraceData );
 	static FText GetTextFromInt( int32 Number );
 	static void SetAmmoDataTextBlocks( UTextBlock* CurrentAmmo, UTextBlock* MaxAmmo, FAmmoData AmmoData );

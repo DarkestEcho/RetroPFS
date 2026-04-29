@@ -54,11 +54,12 @@ protected:
 	float Distance { 0.0f };
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Specs", meta=( ClampMin=0 ) )
-	float SpreadAngleHorizontal { 0.0f };
-
-	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Specs", meta=( ClampMin=0 ) )
-	float SpreadAngleVertical { 0.0f };
-
+	float SpreadAngle { 0.0f };
+	
+	
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category="Debug" )
+	bool bShowTraces { false };
+	
 	bool bInUse { false };
 
 

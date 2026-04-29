@@ -14,10 +14,9 @@ struct FTraceData
 {
 	FViewPoint ViewPoint {};
 	float Distance { 0.0f };
-	float SpreadAngleHorizontal { 0.0f };
-	float SpreadAngleVertical { 0.0f };
-	ECollisionChannel CollisionChannel { ECC_Visibility };
+	float SpreadAngle { 0.0f };
 	TArray<const AActor*> IgnoredActors {};
+	ECollisionChannel CollisionChannel { ECC_Visibility };
 	bool bShowDebugLine { false };
 	FVector DebugLineStart { FVector::ZeroVector };
 };

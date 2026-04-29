@@ -18,13 +18,12 @@ FViewPoint RFPSUtils::GetPawnViewPoint( const APawn* Pawn )
 	return ViewPoint;
 }
 
-FVector RFPSUtils::GetLineTraceDirection( const FViewPoint& ViewPoint, const float SpreadAngleHorizontal, const float SpreadAngleVertical )
+FVector RFPSUtils::GetLineTraceDirection( const FViewPoint& ViewPoint, const float SpreadAngle )
 {
-	if ( SpreadAngleHorizontal > 0.0f || SpreadAngleVertical > 0.0f )
+	if ( SpreadAngle > 0.0f )
 	{
-		const float HalfRadiansHorizontal = FMath::DegreesToRadians( SpreadAngleHorizontal ) / 2.0f;
-		const float HalfRadiansVertical = FMath::DegreesToRadians( SpreadAngleVertical ) / 2.0f;
-		return FMath::VRandCone( ViewPoint.Rotation.Vector(), HalfRadiansHorizontal, HalfRadiansVertical );
+		const float HalfRadians = FMath::DegreesToRadians( SpreadAngle ) / 2.0f;
+		return FMath::VRandCone( ViewPoint.Rotation.Vector(), HalfRadians );
 	}
 	return ViewPoint.Rotation.Vector();
 }
@@ -39,7 +38,7 @@ FHitResult RFPSUtils::MakeLineTraceSingle( const UWorld* World, const FTraceData
 		CollisionParams.AddIgnoredActors( TraceData.IgnoredActors );
 
 		const FVector TraceStart { TraceData.ViewPoint.Location };
-		const FVector TraceDirection { GetLineTraceDirection( TraceData.ViewPoint, TraceData.SpreadAngleHorizontal, TraceData.SpreadAngleVertical ) };
+		const FVector TraceDirection { GetLineTraceDirection( TraceData.ViewPoint, TraceData.SpreadAngle ) };
 		const FVector TraceEnd { TraceData.ViewPoint.Location + TraceDirection * TraceData.Distance };
 
 		World->LineTraceSingleByChannel(
