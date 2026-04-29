@@ -32,35 +32,24 @@ void ARFPSRangedWeapon::BeginPlay()
 
 void ARFPSRangedWeapon::StartAttack()
 {
-	Super::StartAttack();
+	if ( bInUse )
+	{
+		return;
+	}
+	bInUse = true;
 	MakeShot();
 }
 
 void ARFPSRangedWeapon::MakeShot()
 {
-	if ( bInUse )
+	if ( TryDecreaseAmmo() )
 	{
-		return;
+		MakeAllHits();
+		AnimateShot( false );
 	}
-
-	if ( !AmmoComponentPtr.IsValid() || !AmmoComponentPtr->HasAmmo( AmmoType ) )
-	{
-		return;
-	}
-	AmmoComponentPtr->DecreaseAmmo( AmmoType );
-
-	for ( int32 Index = 0; Index < ShotsPerAttack; ++Index )
-	{
-		MakeHit();
-	}
-
-	AnimateShot();
-
-	bInUse = true;
 }
 
-
-void ARFPSRangedWeapon::UpdateFlipbook( UPaperFlipbook* NewFlipbook, bool bLoop )
+void ARFPSRangedWeapon::UpdateFlipbook( UPaperFlipbook* NewFlipbook, const bool bLoop ) const
 {
 	if ( !NewFlipbook || !FlipbookComponent )
 	{
@@ -72,15 +61,33 @@ void ARFPSRangedWeapon::UpdateFlipbook( UPaperFlipbook* NewFlipbook, bool bLoop 
 	FlipbookComponent->OnFinishedPlaying.Clear();
 }
 
+void ARFPSRangedWeapon::MakeAllHits()
+{
+	for ( int32 Index = 0; Index < ShotsPerAttack; ++Index )
+	{
+		MakeHit();
+	}
+}
+
+bool ARFPSRangedWeapon::TryDecreaseAmmo() const
+{
+	if ( AmmoComponentPtr.IsValid() && AmmoComponentPtr->HasAmmo( AmmoType ) )
+	{
+		AmmoComponentPtr->DecreaseAmmo( AmmoType );
+		return true;
+	}
+	return false;
+}
+
 void ARFPSRangedWeapon::OnFireAnimationFinished()
 {
 	UpdateFlipbook( FlipbookIdle, true );
 	bInUse = false;
 }
 
-void ARFPSRangedWeapon::AnimateShot()
+void ARFPSRangedWeapon::AnimateShot( const bool bLoop )
 {
-	UpdateFlipbook( FlipbookFire, false );
+	UpdateFlipbook( FlipbookFire, bLoop );
 	if ( FlipbookComponent )
 	{
 		FlipbookComponent->OnFinishedPlaying.AddDynamic( this, &ARFPSRangedWeapon::OnFireAnimationFinished );

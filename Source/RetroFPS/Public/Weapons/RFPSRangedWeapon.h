@@ -30,14 +30,15 @@ protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category="Specs", meta=( ClampMin=1 ) )
 	int32 ShotsPerAttack { 1 };
 
-	UFUNCTION()
-	void OnFireAnimationFinished();
-
 	virtual void MakeShot();
+	void UpdateFlipbook( UPaperFlipbook* NewFlipbook, const bool bLoop ) const;
 
-private:
+	void MakeAllHits();
+	bool TryDecreaseAmmo() const;
+	void AnimateShot( const bool bLoop );
+
+	UFUNCTION()
+	virtual void OnFireAnimationFinished();
+
 	TWeakObjectPtr<URFPSAmmoComponent> AmmoComponentPtr;
-
-	void UpdateFlipbook( UPaperFlipbook* NewFlipbook, bool bLoop );
-	void AnimateShot();
 };

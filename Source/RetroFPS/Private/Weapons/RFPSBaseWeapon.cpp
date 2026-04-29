@@ -52,6 +52,8 @@ void ARFPSBaseWeapon::BeginPlay()
 	Super::BeginPlay();
 
 	check( FlipbookComponent );
+	check( FlipbookFire )
+	check( FlipbookIdle )
 
 	if ( FlipbookIdle )
 	{
