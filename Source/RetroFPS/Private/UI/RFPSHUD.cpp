@@ -3,6 +3,7 @@
 
 #include "UI/RFPSHUD.h"
 
+#include "Blueprint/UserWidget.h"
 #include "Engine/Canvas.h"
 
 void ARFPSHUD::DrawHUD()
@@ -13,6 +14,15 @@ void ARFPSHUD::DrawHUD()
 	{
 		DrawDebugCrosshair();
 	}
+}
+
+void ARFPSHUD::BeginPlay()
+{
+	Super::BeginPlay();
+
+	UUserWidget* Widget = CreateWidget( GetWorld(), PlayerHUDWidget );
+	Widget->AddToViewport( 0 );
+	Widget->SetVisibility( ESlateVisibility::Visible );
 }
 
 void ARFPSHUD::DrawDebugCrosshair()

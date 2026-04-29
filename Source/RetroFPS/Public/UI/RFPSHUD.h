@@ -29,6 +29,11 @@ protected:
 
 	UPROPERTY( EditAnywhere, BlueprintReadWrite, Category = "Debug" )
 	float DebugCrosshairThickness { 2.0f };
+	
+	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category = "UI" )
+	TSubclassOf<UUserWidget> PlayerHUDWidget;
+	
+	virtual void BeginPlay() override;
 
 private:
 	void DrawDebugCrosshair();
