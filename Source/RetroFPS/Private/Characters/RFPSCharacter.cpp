@@ -8,6 +8,7 @@
 #include "InputActionValue.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "RetroFPS.h"
+#include "Components/RFPSAmmoComponent.h"
 #include "Components/RFPSWeaponComponent.h"
 
 ARFPSCharacter::ARFPSCharacter()
@@ -32,6 +33,7 @@ ARFPSCharacter::ARFPSCharacter()
 	WeaponSocket->SetRelativeLocation( FVector( 20.0, 0.0, -7.0 ) );
 
 	WeaponComponent = CreateDefaultSubobject<URFPSWeaponComponent>( TEXT( "WeaponComponent" ) );
+	AmmoComponent = CreateDefaultSubobject<URFPSAmmoComponent>( TEXT( "AmmoComponent" ) );
 
 	// configure the character comps
 	GetMesh()->SetOwnerNoSee( true );
@@ -60,8 +62,8 @@ void ARFPSCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction( LookAction, ETriggerEvent::Triggered, this, &ARFPSCharacter::LookInput );
 		EnhancedInputComponent->BindAction( MouseLookAction, ETriggerEvent::Triggered, this, &ARFPSCharacter::LookInput );
 		
-		EnhancedInputComponent->BindAction( FireAction, ETriggerEvent::Started, WeaponComponent, &URFPSWeaponComponent::StartFire );
-		EnhancedInputComponent->BindAction( FireAction, ETriggerEvent::Completed, WeaponComponent, &URFPSWeaponComponent::StopFire );
+		EnhancedInputComponent->BindAction( FireAction, ETriggerEvent::Started, WeaponComponent, &URFPSWeaponComponent::StartAttack );
+		EnhancedInputComponent->BindAction( FireAction, ETriggerEvent::Completed, WeaponComponent, &URFPSWeaponComponent::StopAttack );
 	}
 	else
 	{

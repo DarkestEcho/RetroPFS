@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "RFPSCharacter.generated.h"
 
+class URFPSAmmoComponent;
 class URFPSWeaponComponent;
 class UInputComponent;
 class UCameraComponent;
@@ -33,6 +34,9 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Components" )
 	URFPSWeaponComponent* WeaponComponent;
+	
+	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Components" )
+	URFPSAmmoComponent* AmmoComponent;
 
 protected:
 	/** Jump Input Action */
