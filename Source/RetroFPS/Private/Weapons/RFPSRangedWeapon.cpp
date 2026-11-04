@@ -44,7 +44,10 @@ void ARFPSRangedWeapon::MakeShot()
 {
 	if ( TryDecreaseAmmo() )
 	{
-		MakeAllHits();
+		if ( !bFireAfterAnimation )
+		{
+			MakeAllHits();
+		}
 		AnimateShot( false );
 	}
 }
@@ -71,9 +74,9 @@ void ARFPSRangedWeapon::MakeAllHits()
 
 bool ARFPSRangedWeapon::TryDecreaseAmmo() const
 {
-	if ( AmmoComponentPtr.IsValid() && AmmoComponentPtr->HasAmmo( AmmoType ) )
+	if ( AmmoComponentPtr.IsValid() && AmmoComponentPtr->HasAmmo( AmmoType, AmmoPerAttack ) )
 	{
-		AmmoComponentPtr->DecreaseAmmo( AmmoType );
+		AmmoComponentPtr->DecreaseAmmo( AmmoType, AmmoPerAttack );
 		return true;
 	}
 	return false;
@@ -83,6 +86,11 @@ void ARFPSRangedWeapon::OnFireAnimationFinished()
 {
 	UpdateFlipbook( FlipbookIdle, true );
 	bInUse = false;
+
+	if ( bFireAfterAnimation )
+	{
+		MakeAllHits();
+	}
 }
 
 void ARFPSRangedWeapon::AnimateShot( const bool bLoop )

@@ -107,3 +107,19 @@ void RFPSUtils::DrawDebugHitTrace( const UWorld* World, const FHitResult& HitRes
 		);
 	}
 }
+
+void RFPSUtils::LaunchProjectile( UWorld* World, const TSubclassOf<ARFPSProjectile> ProjectileClass, AActor* Owner, const FVector& LaunchLocation, const FVector& LaunchDirectionNormal )
+{
+	if ( !IsValid( World ) )
+	{
+		return;
+	}
+
+	const FTransform SpawnTransform( FRotator::ZeroRotator, LaunchLocation );
+	if ( ARFPSProjectile* Projectile = World->SpawnActorDeferred<ARFPSProjectile>( ProjectileClass, SpawnTransform ) )
+	{
+		Projectile->SetOwner( Owner );
+		Projectile->SetDirection( LaunchDirectionNormal );
+		Projectile->FinishSpawning( SpawnTransform );
+	}
+}

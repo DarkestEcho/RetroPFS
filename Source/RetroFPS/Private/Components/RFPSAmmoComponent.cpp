@@ -25,9 +25,9 @@ TMap<EAmmoType, FAmmoData> URFPSAmmoComponent::GetAmmoDataMap() const
 	return MoveTemp( AmmoDataMap );
 }
 
-bool URFPSAmmoComponent::HasAmmo( const EAmmoType AmmoType ) const
+bool URFPSAmmoComponent::HasAmmo( const EAmmoType AmmoType, const int32 AmmoPerShot ) const
 {
-	return GetAmmoData( AmmoType ).CurrentAmmo > 0;
+	return GetAmmoData( AmmoType ).CurrentAmmo >= AmmoPerShot;
 }
 
 bool URFPSAmmoComponent::IsFullAmmo( const EAmmoType AmmoType ) const
@@ -40,14 +40,9 @@ void URFPSAmmoComponent::IncreaseAmmo( const EAmmoType AmmoType, const int32 Amm
 	SetCurrentAmmo( AmmoType, GetAmmoData( AmmoType ).CurrentAmmo + AmmoCount );
 }
 
-void URFPSAmmoComponent::DecreaseAmmo( const EAmmoType AmmoType )
+void URFPSAmmoComponent::DecreaseAmmo( const EAmmoType AmmoType, const int32 AmmoCount )
 {
-	SetCurrentAmmo( AmmoType, GetAmmoData( AmmoType ).CurrentAmmo - GAmmoPerShot );
-}
-
-void URFPSAmmoComponent::BeginPlay()
-{
-	Super::BeginPlay();
+	SetCurrentAmmo( AmmoType, GetAmmoData( AmmoType ).CurrentAmmo - AmmoCount );
 }
 
 void URFPSAmmoComponent::SetCurrentAmmo( const EAmmoType AmmoType, int32 Ammo )

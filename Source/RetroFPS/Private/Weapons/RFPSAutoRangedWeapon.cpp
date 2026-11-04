@@ -8,6 +8,10 @@
 
 void ARFPSAutoRangedWeapon::StartAttack()
 {
+	if ( bInUse )
+	{
+		return;
+	}
 	if ( !HasAmmo() || !FlipbookFire )
 	{
 		return;

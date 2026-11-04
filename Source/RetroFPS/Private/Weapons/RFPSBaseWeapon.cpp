@@ -85,6 +85,7 @@ void ARFPSBaseWeapon::PostEditChangeProperty( struct FPropertyChangedEvent& Prop
 		}
 	}
 }
+#endif // WITH_EDITOR
 
 void ARFPSBaseWeapon::StartAttack()
 {
@@ -93,7 +94,7 @@ void ARFPSBaseWeapon::StartAttack()
 void ARFPSBaseWeapon::StopAttack()
 {
 }
-#endif // WITH_EDITOR
+
 
 bool ARFPSBaseWeapon::IsInUse() const
 {

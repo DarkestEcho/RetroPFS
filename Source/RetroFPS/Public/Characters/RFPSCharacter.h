@@ -16,16 +16,12 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN( LogTemplateCharacter, Log, All );
 
-/**
- *  A basic first person character
- */
 UCLASS( abstract )
 class ARFPSCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 protected:
-	/** First person camera */
 	UPROPERTY( VisibleAnywhere, BlueprintReadOnly, Category="Components" )
 	UCameraComponent* FirstPersonCameraComponent;
 
@@ -49,15 +45,15 @@ protected:
 
 	/** Look Input Action */
 	UPROPERTY( EditAnywhere, Category ="Input" )
-	class UInputAction* LookAction;
+	UInputAction* LookAction;
 
 	/** Mouse Look Input Action */
 	UPROPERTY( EditAnywhere, Category ="Input" )
-	class UInputAction* MouseLookAction;
+	UInputAction* MouseLookAction;
 	
 	/** Mouse Look Input Action */
 	UPROPERTY( EditAnywhere, Category ="Input" )
-	class UInputAction* FireAction;
+	UInputAction* FireAction;
 
 public:
 	ARFPSCharacter();

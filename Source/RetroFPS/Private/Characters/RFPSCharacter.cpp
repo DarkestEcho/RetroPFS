@@ -75,7 +75,7 @@ void ARFPSCharacter::SetupPlayerInputComponent( UInputComponent* PlayerInputComp
 void ARFPSCharacter::MoveInput( const FInputActionValue& Value )
 {
 	// get the Vector2D move axis
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	const FVector2D MovementVector = Value.Get<FVector2D>();
 
 	// pass the axis values to the move input
 	DoMove( MovementVector.X, MovementVector.Y );
@@ -84,13 +84,13 @@ void ARFPSCharacter::MoveInput( const FInputActionValue& Value )
 void ARFPSCharacter::LookInput( const FInputActionValue& Value )
 {
 	// get the Vector2D look axis
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	// pass the axis values to the aim input
 	DoAim( LookAxisVector.X, LookAxisVector.Y );
 }
 
-void ARFPSCharacter::DoAim( float Yaw, float Pitch )
+void ARFPSCharacter::DoAim( const float Yaw, const float Pitch )
 {
 	if ( GetController() )
 	{
@@ -100,7 +100,7 @@ void ARFPSCharacter::DoAim( float Yaw, float Pitch )
 	}
 }
 
-void ARFPSCharacter::DoMove( float Right, float Forward )
+void ARFPSCharacter::DoMove( float const Right, float const Forward )
 {
 	if ( GetController() )
 	{

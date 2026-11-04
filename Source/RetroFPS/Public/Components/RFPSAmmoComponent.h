@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Types/RFPSConstants.h"
 #include "Types/RFPSTypes.h"
 #include "RFPSAmmoComponent.generated.h"
 
@@ -19,17 +20,15 @@ public:
 	FAmmoData GetAmmoData( EAmmoType AmmoType ) const;
 	TMap<EAmmoType, FAmmoData> GetAmmoDataMap() const;
 
-	bool HasAmmo( const EAmmoType AmmoType ) const;
+	bool HasAmmo( const EAmmoType AmmoType, const int32 AmmoPerShot = GAmmoPerShot ) const;
 	bool IsFullAmmo( const EAmmoType AmmoType ) const;
 
-	void IncreaseAmmo( const EAmmoType AmmoType, const int32 AmmoCount = 1 );
-	void DecreaseAmmo( const EAmmoType AmmoType );
+	void IncreaseAmmo( const EAmmoType AmmoType, const int32 AmmoCount = GAmmoPerShot );
+	void DecreaseAmmo( const EAmmoType AmmoType, const int32 AmmoCount = GAmmoPerShot );
 	
 	FOnAmmoChangedSignature OnAmmoChanged;
 
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY( EditDefaultsOnly, Category="Ammo", meta = (ArraySizeEnum = "AmmoType") )
 	FAmmoData AmmoData[static_cast<uint8>( EAmmoType::Count )];
 
