@@ -14,8 +14,8 @@ public:
 	static FText GetTextFromInt( int32 Number );
 	static void SetAmmoDataTextBlocks( UTextBlock* CurrentAmmo, UTextBlock* MaxAmmo, FAmmoData AmmoData );
 	static void DrawDebugHitTrace( const UWorld* World, const FHitResult& HitResult, const FVector& LineStart );
-	
-	static void LaunchProjectile( UWorld* World, const TSubclassOf<ARFPSProjectile> ProjectileClass, AActor* Owner, const FVector& LaunchLocation, const FVector& LaunchDirectionNormal );
+
+	static void LaunchProjectile( UWorld* World, const TSubclassOf<ARFPSProjectile> ProjectileClass, AActor* Owner, const FHitResult& HitResult, const USceneComponent* FireStartPoint, const bool bShowDebugSphere = false );
 
 	template <class T>
 	static T* GetComponentFromActor( const AActor* Actor );

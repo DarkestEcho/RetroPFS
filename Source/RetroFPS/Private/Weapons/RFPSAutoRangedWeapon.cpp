@@ -16,6 +16,7 @@ void ARFPSAutoRangedWeapon::StartAttack()
 	{
 		return;
 	}
+	bInUse = true;
 
 	GetWorld()->GetTimerManager().SetTimer(
 		ShotTimerHandle,
@@ -43,11 +44,6 @@ void ARFPSAutoRangedWeapon::MakeShot()
 		return;
 	}
 	MakeAllHits();
-}
-
-void ARFPSAutoRangedWeapon::OnFireAnimationFinished()
-{
-	UpdateFlipbook( FlipbookIdle, true );
 }
 
 bool ARFPSAutoRangedWeapon::HasAmmo() const

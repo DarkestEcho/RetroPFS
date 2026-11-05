@@ -22,6 +22,9 @@ ARFPSBaseWeapon::ARFPSBaseWeapon()
 	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>( TEXT( "FlipbookComponent" ) );
 	FlipbookComponent->SetupAttachment( GetRootComponent() );
 	FlipbookComponent->SetRelativeRotation( FRotator( 0.0, 90.0, 0.0 ) );
+	
+	FireStartPoint = CreateDefaultSubobject<USceneComponent>( TEXT( "FireStartPoint" ) );
+	FireStartPoint->SetupAttachment( GetRootComponent() );
 }
 
 void ARFPSBaseWeapon::MakeHit()
@@ -31,7 +34,13 @@ void ARFPSBaseWeapon::MakeHit()
 		return;
 	}
 
-	const FHitResult HitResult = RFPSUtils::MakeLineTraceSingle(
+	const FHitResult HitResult = GetHitResult();
+	// Apply Damage()
+}
+
+FHitResult ARFPSBaseWeapon::GetHitResult()
+{
+	return RFPSUtils::MakeLineTraceSingle(
 		GetWorld(),
 		{
 			RFPSUtils::GetPawnViewPoint( Cast<APawn>( GetOwner() ) ),
@@ -43,7 +52,39 @@ void ARFPSBaseWeapon::MakeHit()
 			FireStartPoint->GetComponentLocation(),
 		}
 	);
-	// Apply Damage()
+}
+
+void ARFPSBaseWeapon::UpdateFlipbook( UPaperFlipbook* NewFlipbook, const bool bLoop ) const
+{
+	if ( !NewFlipbook || !FlipbookComponent )
+	{
+		return;
+	}
+	FlipbookComponent->SetFlipbook( NewFlipbook );
+	FlipbookComponent->SetLooping( bLoop );
+	FlipbookComponent->PlayFromStart();
+	FlipbookComponent->OnFinishedPlaying.Clear();
+}
+
+void ARFPSBaseWeapon::AnimateShot( const bool bLoop )
+{
+	UpdateFlipbook( FlipbookFire, bLoop );
+	if ( FlipbookComponent )
+	{
+		FlipbookComponent->OnFinishedPlaying.AddDynamic( this, &ARFPSBaseWeapon::OnFireAnimationFinished );
+	}
+}
+
+void ARFPSBaseWeapon::MakeShot()
+{
+	MakeHit();
+	AnimateShot( false );
+}
+
+void ARFPSBaseWeapon::OnFireAnimationFinished()
+{
+	UpdateFlipbook( FlipbookIdle, true );
+	bInUse = false;
 }
 
 // Called when the game starts or when spawned
@@ -89,6 +130,12 @@ void ARFPSBaseWeapon::PostEditChangeProperty( struct FPropertyChangedEvent& Prop
 
 void ARFPSBaseWeapon::StartAttack()
 {
+	if ( bInUse )
+	{
+		return;
+	}
+	bInUse = true;
+	MakeShot();
 }
 
 void ARFPSBaseWeapon::StopAttack()

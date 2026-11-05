@@ -3,18 +3,11 @@
 
 #include "Weapons/RFPSRangedWeapon.h"
 #include "Utils/RFPSUtils.h"
-#include "Types/RFPSTypes.h"
-
-#include "PaperFlipbookComponent.h"
-
 
 // Sets default values
 ARFPSRangedWeapon::ARFPSRangedWeapon()
 {
 	PrimaryActorTick.bCanEverTick = false;
-
-	FireStartPoint = CreateDefaultSubobject<USceneComponent>( TEXT( "FireStartPoint" ) );
-	FireStartPoint->SetupAttachment( GetRootComponent() );
 }
 
 // Called when the game starts or when spawned
@@ -30,16 +23,6 @@ void ARFPSRangedWeapon::BeginPlay()
 	}
 }
 
-void ARFPSRangedWeapon::StartAttack()
-{
-	if ( bInUse )
-	{
-		return;
-	}
-	bInUse = true;
-	MakeShot();
-}
-
 void ARFPSRangedWeapon::MakeShot()
 {
 	if ( TryDecreaseAmmo() )
@@ -50,18 +33,6 @@ void ARFPSRangedWeapon::MakeShot()
 		}
 		AnimateShot( false );
 	}
-}
-
-void ARFPSRangedWeapon::UpdateFlipbook( UPaperFlipbook* NewFlipbook, const bool bLoop ) const
-{
-	if ( !NewFlipbook || !FlipbookComponent )
-	{
-		return;
-	}
-	FlipbookComponent->SetFlipbook( NewFlipbook );
-	FlipbookComponent->SetLooping( bLoop );
-	FlipbookComponent->PlayFromStart();
-	FlipbookComponent->OnFinishedPlaying.Clear();
 }
 
 void ARFPSRangedWeapon::MakeAllHits()
@@ -84,20 +55,10 @@ bool ARFPSRangedWeapon::TryDecreaseAmmo() const
 
 void ARFPSRangedWeapon::OnFireAnimationFinished()
 {
-	UpdateFlipbook( FlipbookIdle, true );
-	bInUse = false;
+	Super::OnFireAnimationFinished();
 
 	if ( bFireAfterAnimation )
 	{
 		MakeAllHits();
-	}
-}
-
-void ARFPSRangedWeapon::AnimateShot( const bool bLoop )
-{
-	UpdateFlipbook( FlipbookFire, bLoop );
-	if ( FlipbookComponent )
-	{
-		FlipbookComponent->OnFinishedPlaying.AddDynamic( this, &ARFPSRangedWeapon::OnFireAnimationFinished );
 	}
 }

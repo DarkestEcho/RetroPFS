@@ -12,7 +12,7 @@ class UPaperFlipbookComponent;
 class USceneComponent;
 class UArrowComponent;
 
-UCLASS( Abstract, NotBlueprintable )
+UCLASS( Abstract, Blueprintable )
 class RETROFPS_API ARFPSBaseWeapon : public AActor
 {
 	GENERATED_BODY()
@@ -55,18 +55,27 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category="Specs", meta=( ClampMin=0 ) )
 	float SpreadAngle { 0.0f };
-	
-	
+
+
 	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category="Debug" )
 	bool bShowTraces { false };
-	
-	bool bInUse { false };
 
+	bool bInUse { false };
 
 	virtual void BeginPlay() override;
 
 	virtual void MakeHit();
+	
+	FHitResult GetHitResult();
+	
+	void UpdateFlipbook( UPaperFlipbook* NewFlipbook, const bool bLoop ) const;
+	void AnimateShot( const bool bLoop );
+	virtual void MakeShot();
+	
+	UFUNCTION()
+	virtual void OnFireAnimationFinished();
 
+public:
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty( struct FPropertyChangedEvent& PropertyChangedEvent ) override;
 #endif // WITH_EDITOR

@@ -108,18 +108,23 @@ void RFPSUtils::DrawDebugHitTrace( const UWorld* World, const FHitResult& HitRes
 	}
 }
 
-void RFPSUtils::LaunchProjectile( UWorld* World, const TSubclassOf<ARFPSProjectile> ProjectileClass, AActor* Owner, const FVector& LaunchLocation, const FVector& LaunchDirectionNormal )
+void RFPSUtils::LaunchProjectile( UWorld* World, const TSubclassOf<ARFPSProjectile> ProjectileClass, AActor* Owner, const FHitResult& HitResult, const USceneComponent* FireStartPoint, const bool bShowDebugSphere )
 {
-	if ( !IsValid( World ) )
+	if ( !IsValid( World ) || !IsValid( Owner ) || !IsValid( FireStartPoint ) )
 	{
 		return;
 	}
 
-	const FTransform SpawnTransform( FRotator::ZeroRotator, LaunchLocation );
+	const FTransform SpawnTransform( FRotator::ZeroRotator, FireStartPoint->GetComponentLocation() );
+
+	const FVector EndLocation = HitResult.bBlockingHit ? HitResult.ImpactPoint : HitResult.TraceEnd;
+	const FVector Direction = ( EndLocation - FireStartPoint->GetComponentLocation() ).GetSafeNormal();
+
 	if ( ARFPSProjectile* Projectile = World->SpawnActorDeferred<ARFPSProjectile>( ProjectileClass, SpawnTransform ) )
 	{
 		Projectile->SetOwner( Owner );
-		Projectile->SetDirection( LaunchDirectionNormal );
+		Projectile->SetDirection( Direction );
+		Projectile->ShowDebugSphere( bShowDebugSphere );
 		Projectile->FinishSpawning( SpawnTransform );
 	}
 }

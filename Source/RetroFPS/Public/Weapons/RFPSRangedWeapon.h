@@ -21,31 +21,26 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-public:
-	virtual void StartAttack() override;
-
 protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category="Specs" )
 	EAmmoType AmmoType { EAmmoType::Bullets };
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category="Specs", meta=( ClampMin=1 ) )
 	int32 ShotsPerAttack { 1 };
-	
+
 	UPROPERTY( EditDefaultsOnly, BlueprintReadWrite, Category="Specs", meta=( ClampMin=1 ) )
 	int32 AmmoPerAttack { GAmmoPerShot };
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
 	bool bFireAfterAnimation { false };
 
-	virtual void MakeShot();
-	void UpdateFlipbook( UPaperFlipbook* NewFlipbook, const bool bLoop ) const;
+	virtual void MakeShot() override;
 
 	void MakeAllHits();
-	bool TryDecreaseAmmo() const;
-	void AnimateShot( const bool bLoop );
 
-	UFUNCTION()
-	virtual void OnFireAnimationFinished();
+	bool TryDecreaseAmmo() const;
+	
+	virtual void OnFireAnimationFinished() override;
 
 	TWeakObjectPtr<URFPSAmmoComponent> AmmoComponentPtr;
 };

@@ -39,6 +39,11 @@ void ARFPSProjectile::SetDirection( FVector Direction )
 	ShotDirection = Direction;
 }
 
+void ARFPSProjectile::ShowDebugSphere( const bool bShow )
+{
+	bShowDebugSphere = bShow;
+}
+
 // Called when the game starts or when spawned
 void ARFPSProjectile::BeginPlay()
 {
@@ -90,6 +95,21 @@ void ARFPSProjectile::OnProjectileHit( UPrimitiveComponent* HitComponent, AActor
 	FlipbookComponent->SetFlipbook( FlipbookExplosion );
 	FlipbookComponent->SetLooping( false );
 	FlipbookComponent->SetRelativeScale3D( FlipbookComponent->GetRelativeScale3D() * SpriteScaleOnHit );
+
+	if ( bShowDebugSphere )
+	{
+		DrawDebugSphere(
+			GetWorld(),
+			Hit.ImpactPoint,
+			DamageRadius,
+			8,
+			FColor::Yellow,
+			false,
+			10.0f,
+			0,
+			2.0f
+		);
+	}
 }
 
 AController* ARFPSProjectile::GetController() const

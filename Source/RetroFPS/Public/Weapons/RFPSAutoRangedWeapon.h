@@ -21,8 +21,6 @@ public:
 protected:
 	virtual void MakeShot() override;
 
-	virtual void OnFireAnimationFinished() override;
-
 private:
 	FTimerHandle ShotTimerHandle;
 	bool HasAmmo() const;

@@ -15,10 +15,12 @@ ARFPSProjectileWeapon::ARFPSProjectileWeapon()
 
 void ARFPSProjectileWeapon::MakeHit()
 {
-	if ( !IsValid( FireStartPoint ) )
-	{
-		return;
-	}
-
-	RFPSUtils::LaunchProjectile( GetWorld(), ProjectileClass, this, FireStartPoint->GetComponentLocation(), FireStartPoint->GetComponentRotation().Vector() );
+	RFPSUtils::LaunchProjectile(
+		GetWorld(),
+		ProjectileClass,
+		GetOwner(),
+		GetHitResult(),
+		FireStartPoint,
+		bShowTraces
+	);
 }

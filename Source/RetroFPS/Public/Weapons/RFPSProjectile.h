@@ -20,8 +20,9 @@ class RETROFPS_API ARFPSProjectile : public AActor
 public:
 	// Sets default values for this actor's properties
 	ARFPSProjectile();
-	
+
 	void SetDirection( FVector Direction );
+	void ShowDebugSphere( const bool bShow );
 
 protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
@@ -53,7 +54,7 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Damage )
 	bool bRadialDamage { false };
-	
+
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Damage, meta=(EditCondition = "bRadialDamage") )
 	float DamageRadius { 0.0f };
 
@@ -62,7 +63,7 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Sprite )
 	float SpriteScaleOnHit { 1.0f };
-	
+
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
 	float ProjectileGravityScale { 0.0f };
 
@@ -70,16 +71,19 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	FVector ShotDirection{ FVector::ZeroVector };
-	
+	FVector ShotDirection { FVector::ZeroVector };
+
+	bool bShowDebugSphere { false };
+
 	UFUNCTION()
 	void OnFinishedPlaying();
-	
+
 	UFUNCTION()
 	void OnProjectileHit( UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit );
-	
+
 	AController* GetController() const;
-	
+
+public:
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty( struct FPropertyChangedEvent& PropertyChangedEvent ) override;
 #endif // WITH_EDITOR
