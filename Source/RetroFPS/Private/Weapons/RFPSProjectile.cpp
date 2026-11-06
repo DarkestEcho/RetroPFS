@@ -27,14 +27,14 @@ ARFPSProjectile::ARFPSProjectile()
 	FlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>( "FlipbookComponent" );
 	FlipbookComponent->SetupAttachment( RootComponent );
 	FlipbookComponent->SetRelativeRotation( FRotator( 0.0, 90.0, 0.0 ) );
-
+	FlipbookComponent->OnFinishedPlaying.AddDynamic( this, &ARFPSProjectile::OnFinishedPlaying );
+	
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>( "UProjectileMovementComponent" );
 	ProjectileMovementComponent->ProjectileGravityScale = ProjectileGravityScale;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
-	FlipbookComponent->OnFinishedPlaying.AddDynamic( this, &ARFPSProjectile::OnFinishedPlaying );
 }
 
-void ARFPSProjectile::SetDirection( FVector Direction )
+void ARFPSProjectile::SetDirection( const FVector& Direction )
 {
 	ShotDirection = Direction;
 }
@@ -57,7 +57,7 @@ void ARFPSProjectile::BeginPlay()
 
 	if ( FlipbookComponent && FlipbookFly )
 	{
-		FlipbookComponent->SetFlipbook( FlipbookFly );
+		SetFlipbook( FlipbookFly );
 	}
 
 	ProjectileMovementComponent->InitialSpeed = Speed;
@@ -92,7 +92,7 @@ void ARFPSProjectile::OnProjectileHit( UPrimitiveComponent* HitComponent, AActor
 		bFullDamage);
 		*/
 
-	FlipbookComponent->SetFlipbook( FlipbookExplosion );
+	SetFlipbook( FlipbookExplosion );
 	FlipbookComponent->SetLooping( false );
 	FlipbookComponent->SetRelativeScale3D( FlipbookComponent->GetRelativeScale3D() * SpriteScaleOnHit );
 
@@ -118,6 +118,12 @@ AController* ARFPSProjectile::GetController() const
 	return Pawn ? Pawn->GetController() : nullptr;
 }
 
+void ARFPSProjectile::SetFlipbook( UPaperFlipbook* Flipbook ) const
+{
+	FlipbookComponent->SetFlipbook( Flipbook );
+	FlipbookComponent->SetCustomPrimitiveDataFloat( 0, SpritePitchAmount );
+}
+
 #if WITH_EDITOR
 void ARFPSProjectile::PostEditChangeProperty( struct FPropertyChangedEvent& PropertyChangedEvent )
 {
@@ -132,8 +138,16 @@ void ARFPSProjectile::PostEditChangeProperty( struct FPropertyChangedEvent& Prop
 	{
 		if ( FlipbookComponent )
 		{
-			FlipbookComponent->SetFlipbook( FlipbookFly );
+			SetFlipbook( FlipbookFly );
 		}
 	}
 }
+
+void ARFPSProjectile::OnConstruction( const FTransform& Transform )
+{
+	Super::OnConstruction( Transform );
+	FlipbookComponent->SetCustomPrimitiveDataFloat( 0, SpritePitchAmount );
+}
+
+
 #endif // WITH_EDITOR

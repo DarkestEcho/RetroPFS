@@ -21,7 +21,7 @@ public:
 	// Sets default values for this actor's properties
 	ARFPSProjectile();
 
-	void SetDirection( FVector Direction );
+	void SetDirection( const FVector& Direction );
 	void ShowDebugSphere( const bool bShow );
 
 protected:
@@ -46,7 +46,7 @@ protected:
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
 	float Speed { 0.0f };
 
-	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = Projectile )
 	float LifeTimeInSeconds { 0.0f };
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Damage )
@@ -66,6 +66,9 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
 	float ProjectileGravityScale { 0.0f };
+	
+	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = Sprite )
+	float SpritePitchAmount { 0.0f };
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -82,9 +85,13 @@ private:
 	void OnProjectileHit( UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit );
 
 	AController* GetController() const;
+	
+	void SetFlipbook( UPaperFlipbook* Flipbook ) const;
 
 public:
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty( struct FPropertyChangedEvent& PropertyChangedEvent ) override;
+	
+	virtual void OnConstruction(const FTransform& Transform) override;
 #endif // WITH_EDITOR
 };
