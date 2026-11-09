@@ -23,6 +23,9 @@ ARFPSBaseWeapon::ARFPSBaseWeapon()
 	FlipbookComponent->SetupAttachment( GetRootComponent() );
 	FlipbookComponent->SetRelativeRotation( FRotator( 0.0, 90.0, 0.0 ) );
 	
+	FlipbookComponent->SetCollisionEnabled( ECollisionEnabled::NoCollision );
+	FlipbookComponent->SetGenerateOverlapEvents( false );
+	
 	FireStartPoint = CreateDefaultSubobject<USceneComponent>( TEXT( "FireStartPoint" ) );
 	FireStartPoint->SetupAttachment( GetRootComponent() );
 }

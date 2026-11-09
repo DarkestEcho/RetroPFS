@@ -66,9 +66,6 @@ protected:
 
 	UPROPERTY( EditDefaultsOnly, BlueprintReadOnly, Category = Projectile )
 	float ProjectileGravityScale { 0.0f };
-	
-	UPROPERTY( EditAnywhere, BlueprintReadOnly, Category = Sprite )
-	float SpritePitchAmount { 0.0f };
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -91,7 +88,5 @@ private:
 public:
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty( struct FPropertyChangedEvent& PropertyChangedEvent ) override;
-	
-	virtual void OnConstruction(const FTransform& Transform) override;
 #endif // WITH_EDITOR
 };

@@ -2,6 +2,7 @@
 
 #include "RFPSTypes.generated.h"
 
+class UPaperSprite;
 class UWorld;
 
 struct FViewPoint

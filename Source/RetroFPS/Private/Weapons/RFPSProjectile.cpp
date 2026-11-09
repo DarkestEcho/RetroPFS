@@ -29,6 +29,9 @@ ARFPSProjectile::ARFPSProjectile()
 	FlipbookComponent->SetRelativeRotation( FRotator( 0.0, 90.0, 0.0 ) );
 	FlipbookComponent->OnFinishedPlaying.AddDynamic( this, &ARFPSProjectile::OnFinishedPlaying );
 	
+	FlipbookComponent->SetCollisionEnabled( ECollisionEnabled::NoCollision );
+	FlipbookComponent->SetGenerateOverlapEvents( false );
+	
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>( "UProjectileMovementComponent" );
 	ProjectileMovementComponent->ProjectileGravityScale = ProjectileGravityScale;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
@@ -121,7 +124,6 @@ AController* ARFPSProjectile::GetController() const
 void ARFPSProjectile::SetFlipbook( UPaperFlipbook* Flipbook ) const
 {
 	FlipbookComponent->SetFlipbook( Flipbook );
-	FlipbookComponent->SetCustomPrimitiveDataFloat( 0, SpritePitchAmount );
 }
 
 #if WITH_EDITOR
@@ -142,12 +144,5 @@ void ARFPSProjectile::PostEditChangeProperty( struct FPropertyChangedEvent& Prop
 		}
 	}
 }
-
-void ARFPSProjectile::OnConstruction( const FTransform& Transform )
-{
-	Super::OnConstruction( Transform );
-	FlipbookComponent->SetCustomPrimitiveDataFloat( 0, SpritePitchAmount );
-}
-
 
 #endif // WITH_EDITOR

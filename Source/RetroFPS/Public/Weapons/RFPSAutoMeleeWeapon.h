@@ -6,7 +6,7 @@
 #include "RFPSBaseWeapon.h"
 #include "RFPSAutoMeleeWeapon.generated.h"
 
-UCLASS()
+UCLASS( Abstract, Blueprintable )
 class RETROFPS_API ARFPSAutoMeleeWeapon : public ARFPSBaseWeapon
 {
 	GENERATED_BODY()

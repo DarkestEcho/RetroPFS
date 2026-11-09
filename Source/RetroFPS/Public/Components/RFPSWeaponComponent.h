@@ -29,11 +29,15 @@ protected:
 public:
 	void StartAttack();
 	void StopAttack();
+	
+	void AddWeapon( const TSubclassOf<ARFPSBaseWeapon> Weapon );
 
-protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
 private:
 	int32 CurrentWeaponIndex { 0 };
+	
+	void SpawnWeapon( const int32 WeaponIndex);
+	void DestroyCurrentWeapon();
 };
